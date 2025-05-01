@@ -1,0 +1,20 @@
+// 定义源码打包任务
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+    // 显式声明输出
+    outputs.file archivePath
+}
+
+// 将源码包复制到指定目录
+task copySourcesJar(type: Copy) {
+    from sourcesJar
+    into "build/outputs/aar/"
+}
+
+// 关联任务到构建流程
+afterEvaluate {
+    tasks.named("assembleRelease").configure {
+        finalizedBy copySourcesJar
+    }
+}
