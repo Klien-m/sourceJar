@@ -1,12 +1,20 @@
+// 定义源码打包任务
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+    // 显式声明输出
+    outputs.file archivePath
+}
+
+// 将源码包复制到指定目录
+task copySourcesJar(type: Copy) {
+    from sourcesJar
+    into "build/outputs/sources/"
+}
+
+// 关联任务到构建流程
 afterEvaluate {
-
-    tasks.register('sourcesJar', Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.sourceFiles
-        destinationDir = project.file('build/outputs/sources')
+    tasks.named("assembleRelease").configure {
+        finalizedBy copySourcesJar
     }
-    def sourcesJarTask = project.tasks.findByName('sourcesJar')
-    // 在generatePomXml执行时，执行sourcesJarTask，可根据需要修改自己挂钩的任务
-    generatePomXml.dependsOn sourcesJarTask
-
 }
