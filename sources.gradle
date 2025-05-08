@@ -9,7 +9,7 @@ task sourcesJar(type: Jar) {
 // 将源码包复制到指定目录
 task copySourcesJar(type: Copy) {
     from sourcesJar
-    into "build/outputs/aar/"
+    into "build/outputs/sources/"
 }
 
 // 关联任务到构建流程
